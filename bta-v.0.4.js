@@ -47,7 +47,7 @@
             //document.querySelector(".signal").innerText = "отрицательная цена";
             //result === true ? (createElementDiv("detect: №" + number, antiDebugger())) : (createElementDiv("good"));
         }
-        if (c >= 0.80) { // если цена вырастет до 0.80%
+        if (c >= 0.85) { // если цена вырастет до 0.80%
             //document.querySelector(".signal").innerText = "Покупать";
             pushNotifications("Go", "BUY bitcoin");
             createElem("Go", "BUY");
