@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html lang="ru">
+
+<head>
+    <title>B.T.A. v.0.4</title>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+    <!--
+        <meta http-equiv="pragma" content="no-cache" />
+        <meta http-equiv="no-cache" />
+        <meta http-equiv="cache-control" content="no-cache" />
+        <meta http-equiv='expires' content='-1' />
+        <meta id="robots" content="noindex,nofollow" />
+         -->
+    <script type="text/javascript" src="bta-v.0.4.js"></script>
+
+    <style type="text/css">
+        .log_history {
+            width: 100%;
+            margin-top: 10px;
+            /* внешний отступ в верхней части элемента */
+        }
+
+        .more {
+            font-family: Garamond;
+            font-size: 15px;
+            background: #5E5E5E;
+            color: white;
+            /* Цвет текста */
+            padding: 3px;
+            /* Поля вокруг текста */
+            outline-style: none;
+            /* удалить обводку при фокусе */
+            cursor: pointer;
+
+        }
+
+        #tablica {
+            word-wrap: break-word;
+            /* Перенос слов */
+            border: 1px #888 solid;
+            overflow: auto;
+            height: 200px;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="tablica">
+        <output class="log_history"></output>
+    </div>
+    <hr>
+    <button onclick="go();">GO</button>
+    <button onclick="localStorage.clear()">Clear</button>
+    <input type="text" class="inputTime" value="">
+    <input type="submit" class="timeUnixButton" onclick="timeUnix()" value="Time">
+    <button class="btn-binance" onclick=" window.open('https://www.binance.com/ru/trade/BTC_USDT?layout=basichttps://www.binance.com/ru/trade/BTC_USDT?layout=basic','_blank')">Binance</button>
+    <div class="timer">Time: <span class="minutes">15:00</span><br></div>
+    <!--  -->
+    <div class="log"></div>
+    <div class="log2"></div>
+    <div class="procent"></div>
+    <hr>
+    <p>BTC buy - 0.90% (15m)</p>
+    <p>BNB buy - 1.20% (15m)</p>
+</body>
+
+
+</html>
