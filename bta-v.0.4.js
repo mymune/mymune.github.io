@@ -1,4 +1,19 @@
-    function DOMLoaded(callback) {
+    /*
+     * v.0.4.2
+     *
+     * сделать:  v.0.5
+     * - debud функцию
+     * - функция психологическай поддержки
+     * - let const
+     * - серверную часть
+     * - панель управления настройками и стратегиями
+     * - уведомления на телеграм
+     * - розширеную статистику
+     * - статигии на другие криптовалюты
+     */
+
+
+function DOMLoaded(callback) {
         if (document.readyState != "loading") {
             callback();
         } else {
@@ -14,7 +29,7 @@
     function urlPrice(x) {
         let url = new URL("https://api.binance.com/api/v1/klines");
         url.searchParams.set("symbol", "BTCUSDT");
-        url.searchParams.set("interval", "15m");
+        url.searchParams.set("interval", "5m");
         url.searchParams.set("startTime", x);
         return url;
     };
@@ -53,7 +68,7 @@
             createElem("Go", "BUY");
             soundNotifications();
         }
-        if (c < -1.00) { // если цена урадет до -1.00%
+        if (c < -0.80) { // если цена урадет до -1.00%
             //document.querySelector(".signal").innerText = "убыток в торговле";
             pushNotifications("warning", "SELL bitcoin");
             createElem("warning", "SELL");
@@ -69,6 +84,11 @@
         const xhr = new XMLHttpRequest();
         xhr.open("GET", urlPrice(localStorageTime()));
         xhr.onload = function() {
+            if (xhr.response.length == 2) { //
+                console.log("Good startTime ");
+                //localStorage.clear();
+                //localStorage.removeItem("endTime");
+            }
             if (xhr.response.length == 1) { // если ошибка в url «startTime» неверное время
                 createElem("Error startTime " + xhr.response.length);
                 //localStorage.clear();
@@ -173,13 +193,14 @@
         console.log(unix);
         return unix;
     };
+
     /*
      * timeDate() возращает время и дату
      */
     function timeDate() {
         const time = new Date().toLocaleTimeString();
         const date = new Date().toISOString().slice(0, 10);
-        document.querySelector(".inputTime").value = time + " " + date; // вставляет в поле актуальне время
+        document.querySelector(".inputTime").value = time.slice(0, 6) + "00 " + date; // вставляет в поле актуальне время hh/mm
         return time + " " + date;
     };
 

@@ -1,8 +1,8 @@
-body {
-  overflow: hidden;
-  background: #f5f5f5;
-}
-.log_history {
+        body {
+            overflow: hidden;
+            background: #f5f5f5;
+        }
+        .log_history {
             width: 100%;
             margin-top: 10px;
             /* внешний отступ в верхней части элемента */
