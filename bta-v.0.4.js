@@ -29,7 +29,7 @@ function DOMLoaded(callback) {
     function urlPrice(x) {
         let url = new URL("https://api.binance.com/api/v1/klines");
         url.searchParams.set("symbol", "BTCUSDT");
-        url.searchParams.set("interval", "5m");
+        url.searchParams.set("interval", "15m");
         url.searchParams.set("startTime", x);
         return url;
     };
