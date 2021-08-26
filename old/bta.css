@@ -1,0 +1,36 @@
+        body {
+            overflow: hidden;
+            background: #f5f5f5;
+        }
+        .log_history {
+            width: 100%;
+            margin-top: 10px;
+            /* внешний отступ в верхней части элемента */
+        }
+
+        .more {
+            font-family: Garamond;
+            font-size: 15px;
+            background: #5E5E5E;
+            color: white;
+            /* Цвет текста */
+            padding: 3px;
+            /* Поля вокруг текста */
+            outline-style: none;
+            /* удалить обводку при фокусе */
+            cursor: pointer;
+            user-select: none;
+        }
+
+        #tablica {
+            word-wrap: break-word;
+            /* Перенос слов */
+            border: 1px #888 solid;
+            overflow: auto;
+            height: 200px;
+            width: 100%;
+        }
+
+        button {
+           cursor: pointer;
+        }

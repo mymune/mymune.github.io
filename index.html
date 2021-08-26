@@ -1,0 +1,78 @@
+<!DOCTYPE HTML>
+<html lang="ru">
+
+<head>
+    <title>B.T.A. v.0.4.4</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png"><!-- https://realfavicongenerator.net -->
+    <!--
+        <meta http-equiv="pragma" content="no-cache" />
+        <meta http-equiv="no-cache" />
+        <meta http-equiv="cache-control" content="no-cache" />
+        <meta http-equiv='expires' content='-1' />
+        <meta id="robots" content="noindex,nofollow" />
+        <link rel= "preload"> — когда вам понадобится ресурс через несколько секунд
+        <link rel= "prefetch"> — когда понадобится ресурс на следующей странице
+        <link rel= "preconnect"> — когда вы знаете, что вам скоро понадобится ресурс, но вы ещё не знаете его полный URL
+        <link rel= "dns-prefetch"> — аналогично, когда вы знаете, что вам скоро понадобится ресурс, но вы ещё не знаете его полный URL (для старых браузеров)
+        <link rel= "prerender"> — когда вы уверены, что пользователи перейдут на определённую страницу, и хотите ускорить её отображение
+         -->
+    <script type="text/javascript" src="js-v.0.5"></script>
+    <link rel="stylesheet" type="text/css" href="css-v.0.5.css">
+</head>
+
+<body>
+    <div class="timer">Time: <span class="minutes">5:00</span><br></div>
+    <output class="log">Log: </output>
+    <div class="procent"></div>
+    <p>BTC buy: [$100] 0.85% (15m) &hArr; [$50] 0.33% (5m)</p>
+    <p>BNB buy: [$1] 1.20% (15m) &hArr; [$0.5] 0.70% (5m)</p>
+    <div class="panel">
+        <input type="text" class="inputTime" value="">
+        <button type="submit" class="timeUnixButton" onclick="timeUnix()" >Time</button>
+        <button onclick="localStorage.clear()">Clear</button>
+        <button onclick="go();">Go</button>
+    </div>
+    <div class="tablica">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>%</th>
+                    <th>Price</th>
+                    <th>Strategy</th>
+                    <th>Signal</th>
+                    <th>Time</th>
+                </tr>
+            </thead>
+            <tbody id="tBody">
+                <tr>
+                    <td>-0.16</td>
+                    <td>$47,662.23</td>
+                    <td>0.33% (5m)</td>
+                    <td>BUY</td>
+                    <td>16:18:27 2021-08-26</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="class" id="id"></div>
+    <button id="add">Add Element</button>
+    <button id="remove">Remove 5</button>
+    <button class="btn-binance" onclick=openLink(setting.url[1].tradeBinance)>Binance</button>
+    <script>
+
+        document.getElementById("add").onclick = function() {
+            tableCreate("-0.16", "$47,662.23", "0.33%", "BUY", "14:15:40")
+
+        };
+        document.getElementById("remove").onclick = function() {
+            for (var j = 0; j < 5; j++) {
+                var row = document.getElementById("newTR");
+                row.parentNode.removeChild(row);
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html lang="ru">
+
+<head>
+    <title>B.T.A. v.0.4.2</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+    <!--
+        <meta http-equiv="pragma" content="no-cache" />
+        <meta http-equiv="no-cache" />
+        <meta http-equiv="cache-control" content="no-cache" />
+        <meta http-equiv='expires' content='-1' />
+        <meta id="robots" content="noindex,nofollow" />
+         -->
+    <script type="text/javascript" src="bta-v.0.4.js"></script>
+    <link rel="stylesheet" type="text/css" href="bta.css">
+
+</head>
+
+<body>
+    <div id="tablica">
+        <output class="log_history"></output>
+    </div>
+    <hr>
+    <input type="text" class="inputTime" value="">
+    <input type="submit" class="timeUnixButton" onclick="timeUnix()" value="Time">
+    <button onclick="localStorage.clear()">Clear</button>
+    <button onclick="go();">Go</button>
+    <button class="btn-binance" onclick=" window.open('https://www.binance.com/ru/trade/BTC_USDT?layout=basichttps://www.binance.com/ru/trade/BTC_USDT?layout=basic','_blank')">Binance</button>
+    <hr>
+    <div class="timer">Time: <span class="minutes">15:00</span><br></div>
+    <!--  -->
+    <div class="log"></div>
+    <div class="log2"></div>
+    <div class="procent"></div>
+    <hr>
+    <p>BTC buy: [$100]  0.85% (15m) &hArr; [$50]  0.33% (5m)</p>
+    <p>BNB buy: [$1] 1.20% (15m) &hArr; [$0.5] 0.70% (5m)</p>
+</body>
+
+
+</html>
