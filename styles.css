@@ -26,14 +26,14 @@
         .tablica {
             overflow: auto;
             height: 300px;
-            width: 500px;
+            width: 520px;
             margin-top: 15px;
         }
 
         .table {
             overflow: auto;
             height: 200px;
-            width: 500px;
+            width: 520px;
             border: 1px solid #dddddd;
             border-collapse: collapse;
             text-align: center;

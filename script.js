@@ -16,21 +16,37 @@
          * + кнопка остановки музыки
          *
          *
+         * Release:  v.0.7.1
+         * + улучшиние стратегий (додано BTC [$10] 0.25% (1m))
+         * + мелкие правки кода
+         *
          * pre-release: v.0.7
-         * - Панель анализа данных
+         * - автонастройка цены
+         * - запуск одновременно 2 и болие стратегий (нужна база даных)
+         * - панель анализа данных
          * - функция психологической поддержки
          * - let const
-         * - серверную часть
+         * - сервернуя часть
          * - уведомления на телеграм
          * - статигии на другие криптовалюты
          * - улучшение дизайна
          * - скриншоты графика и свеч для сравнения и анализа
          */
 
-         /*
-         *  статегия BTCUSDT 5m
-         *  если предедужчая свеча больше 0.50%, не покупать
+        /*
+         *  - статегия BTC/USDT -- ETH/USDT 5m
+         *  1. если предедужчая свеча больше 0.50%, не покупать
+         *  2. если 1m стратегия не сработала, не покупать
          *
+         *  - статегия SOL/USDT 1m-5m
+         *  3. если за последние 1 часа(5m) или 15 минут(1m) был сигнал
+         *  и сработала покупка (в пределах 1 ч), следующий сигнал
+         *  в премижутку 1 часа(5m) или 15 минут(1m) пропускаетса.
+         *  4. если сиглал свеча више 1.80%(5м), 1.50%(1м) пропуск.
+         *
+         *
+         *  - стратегия по убиткам :
+         *  если после сигнала, следуючие 2 свечи -0.30% -- сигнал на убыток = продавать
          */
 
 
@@ -48,9 +64,9 @@
          * x впемя в unix. пример: 1629108000000 --> 10:00:00 2021-08-16
          */
         function urlPrice(x) {
-            let url = new URL("https://api.binance.com/api/v1/klines");
+            let url = new URL("https://api.binance.com/api/v1/klines"); // https://api.binance.com/api/v3/time
             url.searchParams.set("symbol", setting("symbol"));
-            url.searchParams.set("interval", setting("interval"));
+            url.searchParams.set("interval", setting("interval") + "m");
             url.searchParams.set("startTime", x);
             debug(url);
             return url;
@@ -198,6 +214,7 @@
          */
         function timeUnix() { // 10:00:00 2021-08-16 --> 1629108000000
             const input = document.querySelector(".inputTime").value; // берет с поля время
+            debug(input);
             const unix = Date.parse(input); // время в unix формат
             //localStorage.setItem("startTime", unix); // установлает начальное время
             return unix;
@@ -251,7 +268,7 @@
             function elem(s) {
                 return document.querySelector(s).checked;
             };
-            if (x === "symbol") { // BTC/USDT
+            if (x === "symbol") { // BTC_USDT
                 if (elem(".BTC_USDT")) {
                     return "BTCUSDT";
                 }
@@ -264,16 +281,19 @@
             }
             if (x === "interval") { // время
                 if (elem(".interval_1m")) {
-                    return "1m";
+                    return 1;
                 }
                 if (elem(".interval_5m")) {
-                    return "5m";
+                    return 5;
                 }
                 if (elem(".interval_15m")) {
-                    return "15m";
+                    return 15;
                 }
             }
             if (x === "procent") { // %
+                if (elem(".procent_25")) {
+                    return 0.25;
+                }
                 if (elem(".procent_34")) {
                     return 0.34;
                 }
@@ -319,7 +339,7 @@
                 //createElem(procent(price[0][1], price[0][4]) + "% [" + timeDate() + "]", price[0][1] + " ==> " + price[0][4] + "  [" + price + "]"); // расчет процентов
                 //console.log(date);
                 console.log(price);
-                timer(60 * 5); // 15 минут
+                timer(60 * setting("interval")); // 15 минут
             });
         };
 
@@ -327,7 +347,7 @@
             run();
             setInterval(function() {
                 run();
-            }, 60000 * 5) // 15 минут
+            }, 60000 * setting("interval")) // 15 минут
         };
         DOMLoaded(function() {
             //localStorage.clear();
