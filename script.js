@@ -4,14 +4,14 @@
          * v.0.4.4   ¯\_(ツ)_/¯
          *
          *
-         * Release:  v.0.5
+         * Release:  v.0.5  - 26.08.21
          * + новый дизайн
          * + таблыца статистики
          * + log функция
          * +- панель управления настройками и стратегиями
          *
          *
-         * Release:  v.0.6.2
+         * Release:  v.0.6.2 - 29.08.21
          * + панель управления: настройки стратегий (с переключателями)
          * + добавлено SOL/USDT
          * + debug функция
@@ -19,27 +19,38 @@
          * + кнопка остановки музыки
          *
          *
-         * Release:  v.0.7.3
+         * Release:  v.0.7.3 - 01.09.21
          * + улучшиние стратегий (додано BTC [$10] 0.25% (1m))
          * + добавлено ETH/USDT
          * + добавлено автонастройка статегий (signal) (для каждий статегий разные оповещение)
          * + мелкие правки кода
          *
          *
-         * pre-release: v.0.8
-         * - улучшить и переписать код
-         * - запуск одновременно 2 и болие стратегий (нужна база даных)
+         * Release:  v.0.8.2
+         * + звук об ошибке
+         * + let, const
+         * + добавлено DOT/USDT
+         * + улучшена таблица
+         * + остановка уведомления пробелом
+         * + подготовка к большим изменений в следующий версии
+         *
+         *
+         * pre-release: v.0.9
+         * - база данных
+         * - улучшить и переписать код (es6)
+         * - единственная  функция по обработке ошибок
+         * - автоисправление сетевых ошибок
+         * - запуск одновременно 2 и более стратегий (нужна база данных)
          * - панель анализа данных
          * - функция психологической поддержки
-         * - let const
-         * - сервернуя часть
+         * - серверныя часть
          * - уведомления на телеграм
-         * - статигии на другие криптовалюты
+         * - стратегии на другие криптовалюты
          * - улучшение дизайна
-         * - скриншоты графика и свеч для сравнения и анализа
+         * - график (и скриншоты) свеч для сравнения и анализа
          */
 
-         /*
+         /* https://vc.ru/finance/207749-kak-ya-torgovyh-robotov-razrabatyval
          *  - статегия BTC/USDT -- ETH/USDT 5m
          *  1. если предедужчая свеча больше 0.50%, не покупать.(нужна база даных)
          *  2. если 1m стратегия не сработала, не покупать.
@@ -50,7 +61,13 @@
          *  4. если сиглал свеча више 1.80%(5м), 1.50%(1м), не покупать.
          *  5. если цена близко до круглих значений 115, 120, 125, не покупать.
          *  6. если тренд низходящий, не покупать.
-         *  7. если предудущая свеча с большим минусом (-0.40%)(1m), покупать, но не болие (-1.0%).
+         *  6.1. если последные 15 мин есть свечи (2шт.) с болышими минусами (-0.70%), не покупать.
+         *  7. если предудущая свеча с большим минусом (-0.40%)(1m), покупать, но  п.6 и 6.1.
+         *  8. если торги идут с 9:00 по 21:00
+         *  9. если цена  приблизилась до пиковой дневной(24ч) цены, не покупать.
+         *  10. если предедужчые 2 свечы больше(1m) или 3 свечы(15m), не покупать
+         *  11. если BTC растет, SOL  не покупать.
+         *
          *
          *
          *  - стратегия по убиткам:
@@ -109,13 +126,13 @@
             return c.toFixed(2);
         };
 
-         /*
+        /*
          * getPrice() GET запрос, тип ответа - JSON-строка.
          * price[0][1] Многомерные массивы, [0] = первое число. [1] = второе.
          */
         const getPrice = function(callback) {
             const xhr = new XMLHttpRequest();
-            xhr.open("GET", urlPrice(localStorageTime()));
+            xhr.open("GET", urlPrice(localStorageTime()), true);
             xhr.responseType = "json"; // возвращает тип ответа
             xhr.addEventListener("load", callback);
             xhr.send(null); // запрос
@@ -141,25 +158,25 @@
             };
         };
 
-         /*
-         * timer(x) для визуального учета времени 15 минут.
+        /*
+         * timer(x) для визуального учета времени в минутах.
          */
         function timer(time) {
-            var t = time, min, sec;
+            let t = time, min, sec;
             let timerId = setInterval(function() {
                 min = parseInt(t / 60, 10)
                 sec = parseInt(t % 60, 10);
                 min = min < 10 ? "0" + min : min;
                 sec = sec < 10 ? "0" + sec : sec;
                 document.querySelector(".minutes").textContent = min + ":" + sec;
-                document.title = min + ":" + sec; // Изменить title страницы
+                //document.title = min + ":" + sec; // Изменить title страницы
                 if (--t < 0) {
                     clearTimeout(timerId);
                 }
             }, 1000);
         };
 
-         /*
+        /*
          * Оповещения в браузере  Notifications не работают.
          * Необходимо перевести сайт на HTTPS. Или включить флаг
          * chrome://flags/#unsafely-treat-insecure-origin-as-secure
@@ -169,7 +186,7 @@
          */
         function pushNotifications(a, b) {
             if ("Notification" in window) { // если браузер поддерживает Notifications
-                var notification = new Notification(a, {
+                let notification = new Notification(a, {
                     tag: "status", // заменит текущее уведомление с таким же тегом
                     body: b,
                     icon: "http://habrastorage.org/storage2/cf9/50b/e87/cf950be87f8c34e63c07217a009f1d17.jpg"
@@ -180,18 +197,25 @@
             };
         };
 
-         /*
+        /*
          * soundNotifications() звуковое уведомления
          */
         function soundNotifications() {
             //const audio = document.querySelector(".audio");
             audio.play(); //    «audio» по id селектера
-            //var audio = new Audio();
+            document.onkeydown = function(event) {
+                if (event.keyCode === 32) { // остановить уведомления пробелом
+                    event.preventDefault();
+                    event.stopImmediatePropagation();
+                    audio.pause();
+                }
+            };
+            //const audio = new Audio();
             // audio.src = "alarm.mp3";
             //audio.autoplay = true; // Автоматически запускаем
         };
 
-         /*
+        /*
          * window.onbeforeunload Предупреждение при закрытии страницы
          *
         window.onbeforeunload = function() {
@@ -201,7 +225,7 @@
         *
         */
 
-         /*
+        /*
          * timeUnix() установлает начальное время кнопкой и возращает время unix формат
          */
         function timeUnix() { // 10:00:00 2021-08-16 --> 1629108000000
@@ -212,7 +236,7 @@
             return unix;
         };
 
-         /*
+        /*
          * timeDate() возращает время и дату
          */
         function timeDate() {
@@ -222,7 +246,7 @@
             return time + " " + date;
         };
 
-         /*
+        /*
          * openLink(x) откривает силку в новой вкладке.
          * визивается в <button onclick=openLink(x)
          */
@@ -231,9 +255,13 @@
             //console.log(open);
         };
 
+        // https://itchief.ru/javascript/ajax-introduction
+       /*
+
+
         function tableCreate(a, b, c, d, e) {
-            var tbody = document.getElementById("tBody");
-            var tr = document.createElement("tr");
+            const tbody = document.getElementById("tBody");
+            const tr = document.createElement("tr");
             tr.setAttribute("id", "new_tr");
             tr.appendChild(document.createElement("td")).appendChild(document.createTextNode(a));
             tr.appendChild(document.createElement("td")).appendChild(document.createTextNode(b));
@@ -242,17 +270,36 @@
             tr.appendChild(document.createElement("td")).appendChild(document.createTextNode(e));
             tbody.prepend(tr); // вставляеи в начало таблицы новие дание
         };
+*/
 
-         /*
+       /* addTable(x)
+        *
+        *
+        *
+        */
+        function addTable(x) {
+            const tbody = document.querySelector(".new_table");
+            const tr = document.createElement("tr");
+            tr.setAttribute("id", "new_tr");
+            for (let i = 0; i < x.length; i++) {
+                tr.appendChild(document.createElement("td")).appendChild(document.createTextNode(x[i]));
+            }
+            tbody.prepend(tr); // вставляет в начало таблицы новие дание
+        };
+
+        /*
          * log(x) создает и возращает лог.
          */
         function log(x) {
+            const audio = new Audio();
+            audio.src = "error.mp3";
+            audio.autoplay = true; // Автоматически запускаем
             const elem = document.querySelector(".log");
             const data = document.createTextNode(" [" +x+ "] ");
             elem.appendChild(data);
         };
 
-         /*
+        /*
          * setting(x) возращает в коде настроийки (x) которие вибраны пользивателем
          * через флажки «checkbox»
          */
@@ -269,6 +316,9 @@
                 }
                 if (elem(".ETH_USDT")) {
                     return "ETHUSDT";
+                }
+                if (elem(".DOT_USDT")) {
+                    return "DOTUSDT";
                 }
             }
             if (x === "interval") { // время
@@ -292,8 +342,8 @@
                 if (elem(".procent_85")) { // btc
                     return 0.85;
                 }
-                if (elem(".procent_61")) { // sol
-                    return 0.61;
+                if (elem(".procent_60")) { // sol
+                    return 0.60;
                 }
                 if (elem(".procent_74")) { // sol
                     return 0.74;
@@ -301,13 +351,20 @@
                 if (elem(".procent_40")) { // eth
                     return 0.40;
                 }
+                if (elem(".procent_70")) { // dot
+                    return 0.70;
+                }
+                if (elem(".procent_81")) { // dot
+                    return 0.81;
+                }
             } else {
                 console.log("error setting");
             }
         };
+        // https://webdevblog.ru/izuchaem-indexeddb/
+        // https://habr.com/ru/company/netologyru/blog/333544/
 
-
-         /*
+        /*
          * debug(x) debug функция.
          *
          *
@@ -318,7 +375,7 @@
             }
         };
 
-         /*
+        /*
          * clearTime() чистить только localStorage время
          * нужно, чтобы не удаляло localStorage.getItem("BUY")
          *
@@ -352,7 +409,7 @@
                     }
                     console.log("за последние 60 мин была покупка потому не покупать");
                 }
-                return "not recommend";
+                return "no recommend";
             }
             if (x < -0.30) { // если цена критически упадет
                 return "warning";
@@ -363,7 +420,7 @@
 
         };
 
-         /*
+        /*
          * run(x) главная функция.
          *
          *
@@ -378,7 +435,7 @@
                 localStorage.setItem("endTime", price[1][0]); // установлает актульние(последнее) время
                 //document.querySelector(".procent").innerText = procent(price[0][1], price[0][4]) + "%"; // расчет процентов
                 //pushNotifications("Покупать", procent(price[0][1], price[0][4]) + "%");
-                tableCreate(procent(price[0][1], price[0][4]) + "%", "$" + price[0][1], setting("procent"), signal(procent(price[0][1], price[0][4])), timeDate());
+                addTable([setting("symbol"), procent(price[0][1], price[0][4]) + "%", "$" + price[0][1], setting("procent"), signal(procent(price[0][1], price[0][4])), timeDate()]);
                 //createElem(procent(price[0][1], price[0][4]) + "% [" + timeDate() + "]", price[0][1] + " ==> " + price[0][4] + "  [" + price + "]"); // расчет процентов
                 //console.log(date);
                 console.log(price);
