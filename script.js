@@ -26,7 +26,7 @@
          * + мелкие правки кода
          *
          *
-         * Release:  v.0.8.2
+         * Release:  v.0.8.2 (07.09.2021)
          * + звук об ошибке
          * + let, const
          * + добавлено DOT/USDT
@@ -35,7 +35,15 @@
          * + подготовка к большим изменений в следующий версии
          *
          *
-         * pre-release: v.0.9
+         *
+         * Release:  v.0.9 (13.09.2021)
+         * + подготовка к большим изменений в версии 1.0
+         * + правки кода
+         * + исправлено мелких ошибок
+         *
+         *
+         * pre-release: v.1.0
+         * + новый дизайн
          * - база данных
          * - улучшить и переписать код (es6)
          * - единственная  функция по обработке ошибок
@@ -43,7 +51,7 @@
          * - запуск одновременно 2 и более стратегий (нужна база данных)
          * - панель анализа данных
          * - функция психологической поддержки
-         * - серверныя часть
+         * - серверная часть
          * - уведомления на телеграм
          * - стратегии на другие криптовалюты
          * - улучшение дизайна
@@ -90,8 +98,8 @@
          */
         function urlPrice(x) {
             let url = new URL("https://api.binance.com/api/v1/klines"); // https://api.binance.com/api/v3/time
-            url.searchParams.set("symbol", setting("symbol"));
-            url.searchParams.set("interval", setting("interval") + "m");
+            url.searchParams.set("symbol", setting("symbol")); // + "USDT"
+            url.searchParams.set("interval", setting("interval") + "m");   // parseInt('100m')
             url.searchParams.set("startTime", x);
             debug(url);
             return url;
@@ -342,8 +350,8 @@
                 if (elem(".procent_85")) { // btc
                     return 0.85;
                 }
-                if (elem(".procent_60")) { // sol
-                    return 0.60;
+                if (elem(".procent_080")) { // sol
+                    return 0.80;
                 }
                 if (elem(".procent_74")) { // sol
                     return 0.74;
@@ -398,16 +406,17 @@
             };
             if (x >= setting("procent")) { // если цена болеше x %
                 console.log("цена болеше x % ");
-                if (x < 1.50) { // и если strategy(4) цена менша xx %
+                if (x < 3.50) { // и если strategy(4) цена менша xx %
                     console.log("цена менша за xx %");
                     console.log(strategy3(BUY, timeDate()) + " минути");
                     if (strategy3(BUY, timeDate()) >= 60) { // и если за последние 1 час (15) нет покупок
                         localStorage.setItem("BUY", timeDate());
-                        pushNotifications("Go", "BUY bitcoin");
+                        //pushNotifications("Go", "BUY bitcoin");
                         soundNotifications();
                         return "BUY";
                     }
                     console.log("за последние 60 мин была покупка потому не покупать");
+                    soundNotifications();
                 }
                 return "no recommend";
             }

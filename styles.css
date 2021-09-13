@@ -2,7 +2,8 @@
             font-size: 15px;
             padding: 20px;
             font-family: Garamond;
-            background: linear-gradient(135deg, #CBD3F1 0%, #e3e7f7 100%) fixed;
+            background: linear-gradient(135deg, #ebf0f7 0%, #e3e7f7 100%) fixed;
+            color: #2e2e2f;
         }
 
         .panel {
