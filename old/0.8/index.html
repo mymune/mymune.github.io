@@ -1,0 +1,133 @@
+<!DOCTYPE HTML>
+<html lang="ru">
+
+<head>
+    <title>beta v.0.8.2</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <!-- https://realfavicongenerator.net -->
+    <!--
+        <meta http-equiv="pragma" content="no-cache" />
+        <meta http-equiv="no-cache" />
+        <meta http-equiv="cache-control" content="no-cache" />
+        <meta http-equiv='expires' content='-1' />
+        <meta id="robots" content="noindex,nofollow" />
+        <link rel= "preload"> — когда вам понадобится ресурс через несколько секунд
+        <link rel= "prefetch"> — когда понадобится ресурс на следующей странице
+        <link rel= "preconnect"> — когда вы знаете, что вам скоро понадобится ресурс, но вы ещё не знаете его полный URL
+        <link rel= "dns-prefetch"> — аналогично, когда вы знаете, что вам скоро понадобится ресурс, но вы ещё не знаете его полный URL (для старых браузеров)
+        <link rel= "prerender"> — когда вы уверены, что пользователи перейдут на определённую страницу, и хотите ускорить её отображение
+         -->
+    <script type="text/javascript" src="script.js"></script>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+
+<body>
+
+
+    <div class="procent"></div>
+    <a href="test/coin.html">test</a>
+    <p>BTC buy: [$100] 0.85% (15m)</p>
+    <p>BTC buy: [$50] 0.34% (5m) </p>
+    <p>BTC buy: [$10] 0.25% (1m) test*</p>
+    <p>ETH buy: [$5] 0.55% (5m)</p>
+    <p>ETH buy: [$3] 0.40% (1m) pririotet*</p>
+    <p>SOL buy: [$0.50] 1.60% (15m) risk*</p>
+    <p>SOL buy: [$0.30] 0.74% - 0.90% (5m) </p>
+    <p>SOL buy: [$0.15] 0.60% (1m) pririotet*</p>
+    <p>BNB buy: [$1] 1.20% (15m) </p>
+    <p>BNB buy: [$0.5] 0.70% (5m)</p>
+    <p>XRP buy: [$0.0010] 0.85% (5m)</p>
+    <p>XRP buy: [$0.0005] 0.60% (1m)</p>
+    <p>DOT buy: [$0.05] 0.70%-0.80% (1m)</p>
+    <p>DOT buy: [$0.05] 0.81% (5m)</p>
+    <p>LINK buy: [$0.10] 0.55% (5m)</p>
+    <p>LINK buy: [$0.05] 0.38% (1m)</p>
+    <p>LINK buy: [$0.01] 0.90% (5m)</p>
+
+    <div class="Dashboard" id="id"></div>
+
+    <div class="strategyBTC">
+        <label><input type="checkbox" class="BTC_USDT" checked> BTC/USDT </label>
+        <label><input type="checkbox" class="interval_5m" checked> 5m </label>
+        <label><input type="checkbox" class="interval_15m"> 15m</label>
+        <label><input type="checkbox" class="procent_25"> 0.25%</label>
+        <label><input type="checkbox" class="procent_34" checked> 0.34%</label>
+        <label><input type="checkbox" class="procent_85"> 0.85%</label>
+    </div>
+
+    <div class="strategySOL">
+        <label><input type="checkbox" class="SOL_USDT"> SOL/USDT </label>
+        <label><input type="checkbox" class="interval_1m"> 1m </label>
+        <label><input type="checkbox" disabled> 5m </label>
+        <label><input type="checkbox" class="procent_60"> 0.60%</label>
+        <label><input type="checkbox" class="procent_74" > 0.74%</label>
+    </div>
+
+    <div class="strategyETH">
+        <label><input type="checkbox" class="ETH_USDT"> ETH/USDT </label>
+        <label><input type="checkbox" disabled> 1m </label>
+        <label><input type="checkbox" class="procent_40"> 0.40%</label>
+    </div>
+
+    <div class="strategyDOT">
+        <label><input type="checkbox" class="DOT_USDT"> DOT/USDT </label>
+        <label><input type="checkbox" disabled> 1m </label>
+        <label><input type="checkbox" class="procent_70"> 0.70%</label>
+        <label><input type="checkbox" class="procent_81"> 0.81%</label>
+    </div>
+
+    <label><input type="checkbox" class="debug"> Debug </label>
+    <div class="timer">Time: <span class="minutes">5:00</span><br></div>
+    <output class="log">Log: </output>
+
+    <div class="panel">
+        <input type="text" class="inputTime" value="">
+        <button onclick="clearTime()">Clear</button>
+        <button type="submit" class="timeUnixButton" onclick="timeUnix()">Time</button>
+        <button onclick="go();">Go</button>
+        <audio id="audio">
+            <source src="alarm.mp3" type="audio/mpeg">
+        </audio>
+        <button onclick="audio.pause()">&#x1F50A</button>
+        <button >&#128176</button>
+    </div>
+
+    <div class="panel2">
+        <button id="add">Add Element</button>
+        <button id="remove">Remove</button>
+        <button class="btn-binance" onclick=openLink("https://www.binance.com/ru/trade/BTC_USDT?layout=basic")>Binance BTC</button>
+        <button class="btn-binance" onclick=openLink("https://www.binance.com/ru/trade/SOL_USDT?layout=basic")>Binance SOL</button>
+    </div>
+
+    <table class="tablica">
+            <thead>
+                <tr>
+                    <th>Coin</th>
+                    <th>%</th>
+                    <th>Price</th>
+                    <th>Strategy</th>
+                    <th>Signal</th>
+                    <th>Time</th>
+                </tr>
+            </thead>
+            <tbody class="new_table">
+            </tbody>
+    </table>
+
+    <script>
+        document.getElementById("add").onclick = function() {
+            addTable(["BTC", "-0.16", "$48731.25000000", "0.33% (5m)", "BUY", "14:15:40 2021-08-28"])
+
+        };
+        document.getElementById("remove").onclick = function() {
+            for (var j = 0; j < 5; j++) {
+                var row = document.getElementById("new_tr");
+                row.parentNode.removeChild(row);
+            }
+        }
+    </script>
+</body>
+
+</html>
